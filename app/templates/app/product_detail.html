@@ -1,0 +1,13 @@
+{% extends "app/base.html" %}
+
+{% block content %}
+<div class="post-entry">
+    <h2>{{product.name}}</h2>
+    <p>Description: {{product.description}}</p>
+    <p>Stock Quantity: {{product.stock_quantity}}</p>
+    <p>Price: {{product.price}}</p>
+</div>
+<a href="{% url "product_update" product.pk %}">Update</a>
+<a href="{% url "product_delete" product.pk %}">Delete</a>
+{% endblock content %}
+
