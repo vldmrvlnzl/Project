@@ -1,5 +1,7 @@
 {% extends "app/base.html" %} 
-
+{% block title %}
+    <title>Update Product</title>
+{% endblock title %}
 {% block content %}
     <h1> Update your products</h1>
     <form action="{% url "product_update" product.pk %}" method="post">

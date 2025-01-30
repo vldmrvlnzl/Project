@@ -1,5 +1,7 @@
 {% extends "app/base.html" %} 
-
+{% block title %}
+    <title>Delete Product</title>
+{% endblock title %}
 {% block content %}
     <h1>Delete products</h1>
     <form action="{% url "product_delete" object.pk %}" method="post">

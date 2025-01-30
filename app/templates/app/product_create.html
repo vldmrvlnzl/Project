@@ -1,5 +1,7 @@
 {% extends "app/base.html" %} 
-
+{% block title %}
+    <title>Create Product</title>
+{% endblock title %}
 {% block content %}
     <h1> Add your products</h1>
     <form action="{% url "product_create" %}" method="post">

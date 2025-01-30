@@ -1,5 +1,49 @@
-<header>
-    <a href="{% url "home" %}">Home</a>
-    <a href="{% url "product_list" %}">Product</a>
-    <a href="{% url "about" %}">About</a>
-</header>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        {% if user.is_authenticated %}
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url "home" %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url "product_list" %}">Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url "about" %}">About</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="{% url "login" %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{user.username}}
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Order</a></li>
+                    <form method="post" action={% url "logout" %}>
+                    {% csrf_token %}
+                        <li><button class="dropdown-item" type="submit">Logout</button></li>
+                    </form>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="">Cart</a>
+                </li>
+            </ul>
+        {% else %}
+        <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="{% url "home" %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url "product_list" %}">Product</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "about" %}">About</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url "login" %}">Login</a>
+            </li>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
