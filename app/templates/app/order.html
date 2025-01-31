@@ -1,0 +1,50 @@
+{% extends 'app/base.html' %} {% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Order Payment</h2>
+
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item_total in item_totals %}
+      <tr>
+        <td>
+          <img
+            src="{{ item_total.item.product.image.url }}"
+            alt="{{ item_total.item.product.name }}"
+            width="50"
+            height="50"
+          />
+        </td>
+        <td>{{ item_total.item.product.name }}</td>
+        <td>{{ item_total.item.quantity }}</td>
+        <td>₱{{ item_total.item.product.price|floatformat:2 }}</td>
+        <td>₱{{ item_total.total_price|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="text-center mt-4">
+    <h3>
+      Total Order Price:
+      <span class="text-success" id="totalCartPrice"
+        >₱{{ total_cart_price|floatformat:2 }}</span
+      >
+    </h3>
+  </div>
+
+  <div class="text-center mt-4">
+    <a href="{% url 'order_details' pk=order.pk %}" class="btn btn-success"
+      >Confirm Payment</a
+    >
+  </div>
+</div>
+{% endblock %}

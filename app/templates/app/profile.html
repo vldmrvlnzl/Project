@@ -1,0 +1,21 @@
+{% extends "app/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Profile</h2>
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ user.username }}</h5>
+                    <p>Email: {{ user.email }}</p>
+                    <a href="{% url 'profile_update' %}" class="btn btn-primary">Update Profile</a>
+                    <a href="{% url 'account_delete' %}" class="btn btn-danger mt-2">Delete Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

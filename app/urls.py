@@ -1,12 +1,20 @@
 from django.urls import path
+from . import views
 from .views import (
+    AccountDeleteView,
+    CartListView,
+    CheckoutListView,
     HomePageView,
     AboutPageView,
+    OrderDetailsView,
+    OrderView,
     ProductCreateView,
     ProductDeleteView,
     ProductDetailView,
     ProductListView,
     ProductUpdateView,
+    ProfileUpdateView,
+    ProfileView,
 )
 
 urlpatterns = [
@@ -25,4 +33,13 @@ urlpatterns = [
         ProductDeleteView.as_view(),
         name="product_delete",
     ),
-]
+    path('cart/', CartListView.as_view(), name='cart'),
+    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('checkout/', CheckoutListView.as_view(), name='checkout'),
+    path('profile/', ProfileView.as_view(), name='profile'),
+    path('profile/update/', ProfileUpdateView.as_view(), name='profile_update'),
+    path('profile/delete/', AccountDeleteView.as_view(), name='account_delete'),
+    path('order/', OrderView.as_view(), name='order'),
+    path('order_details/<int:pk>/', OrderDetailsView.as_view(), name='order_details')
+
+    ]

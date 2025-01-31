@@ -5,5 +5,40 @@
 
 
 {% block content %}
-    <h1>About</h1>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">About Zneek</h1>
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <h3 class="text-primary">Welcome to Zneek</h3>
+            <p class="lead">
+                At <strong>Zneek</strong>, we connect shoe lovers with premium footwear from trusted local brands. Whether you're a reseller or just looking for the latest style, we have the perfect shoes for you!
+            </p>
+            <p>
+                Our mission is to offer a seamless shopping experience where you can easily discover, buy, and resell high-quality shoes, all while supporting local brands.
+            </p>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <h3 class="text-primary">Our Vision</h3>
+            <p>
+                To revolutionize the online shoe shopping experience by empowering local shoe brands and resellers, giving customers access to a variety of styles at competitive prices.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-primary">Our Story</h3>
+            <p>
+                Zneek started with the simple goal of bridging the gap between resellers and local shoe brands. By combining technology and fashion, we've created a platform that simplifies the buying and selling process, ensuring that customers have access to the best footwear options.
+            </p>
+            <p>
+                We're not just another shoe retailer; we're a community of fashion-forward individuals passionate about shoes and the culture surrounding them. Join us in building a vibrant marketplace for shoes, where everyone can thrive!
+            </p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Go Back to Home</a>
+    </div>
+</div>
 {% endblock content %}

@@ -1,0 +1,120 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Your Cart</h2>
+
+    <form method="POST" id="cart-form">
+        {% csrf_token %}
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th><input type="checkbox" id="checkAll"> Select All</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td><input type="checkbox" name="selected_items" value="{{ item.id }}" class="itemCheckbox"></td>
+                    <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="50" height="50"></td>
+                    <td>{{ item.product.name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="updateQuantity({{ item.id }}, -1)">-</button>
+                        <input type="number" id="quantity-{{ item.id }}" name="quantity_{{ item.id }}" value="{{ item.quantity }}" min="1" max="{{ item.product.stock_quantity }}" class="quantity-input" onchange="updatePrice({{ item.id }})">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="updateQuantity({{ item.id }}, 1)">+</button>
+                    </td>
+                    <td>${{ item.product.price|floatformat:2 }}</td>
+                    <td id="total-{{ item.id }}">${{ item.total_price|floatformat:2 }}</td>
+                    <td>
+                        <button type="submit" class="btn btn-danger" name="delete_item" value="{{ item.id }}">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="text-center mt-4">
+            <h3>Total Cart Price: <span class="text-success" id="totalCartPrice">${{ total_cart_price|floatformat:2 }}</span></h3>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary" onclick="redirectToCheckout()">Proceed to Checkout</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('checkAll').addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('.itemCheckbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+
+    function updateQuantity(itemId, change) {
+        const quantityInput = document.getElementById(`quantity-${itemId}`);
+        let quantity = parseInt(quantityInput.value);
+        
+        quantity += change;
+        const maxQuantity = parseInt(quantityInput.getAttribute("max"));
+
+        if (quantity < 1) return;
+        if (quantity > maxQuantity) return; 
+        
+        quantityInput.value = quantity;
+
+        updatePrice(itemId);
+    }
+
+    function updatePrice(itemId) {
+        const quantity = parseInt(document.getElementById(`quantity-${itemId}`).value);
+        const price = parseFloat(document.querySelector(`#total-${itemId}`).previousElementSibling.textContent.replace('$', ''));
+        const totalPrice = price * quantity;
+        document.getElementById(`total-${itemId}`).textContent = `$${totalPrice.toFixed(2)}`;
+
+        updateCartTotal();
+    }
+
+    function updateCartTotal() {
+        let totalCartPrice = 0;
+        document.querySelectorAll('tbody tr').forEach(row => {
+            const totalPrice = parseFloat(row.querySelector('td:nth-child(6)').textContent.replace('$', ''));
+            totalCartPrice += totalPrice;
+        });
+        document.getElementById('totalCartPrice').textContent = `$${totalCartPrice.toFixed(2)}`;
+    }
+
+    function redirectToCheckout() {
+        const selectedItems = [];
+        document.querySelectorAll('.itemCheckbox:checked').forEach(checkbox => {
+            selectedItems.push(checkbox.value);
+        });
+
+        if (selectedItems.length === 0) {
+            alert('Please select at least one item.');
+            return;
+        }
+
+        const form = document.getElementById('cart-form');
+        selectedItems.forEach(itemId => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'selected_items';
+            input.value = itemId;
+            form.appendChild(input);
+        });
+
+  
+        form.action = "{% url 'checkout' %}";
+        form.submit();
+    }
+</script>
+{% endblock %}  
